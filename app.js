@@ -72,26 +72,16 @@
     });
   });
 
-  // "Play on Telegram" — the Mini App does not exist yet. Do not invent a
-  // URL: the link is a placeholder that explains it is coming soon.
-  var playBtn = document.getElementById('play-telegram-btn');
-  if (playBtn) {
-    playBtn.addEventListener('click', function (e) {
-      e.preventDefault();
-      setStatus('The Telegram Mini App is coming soon. The Play link will appear here once it is live.');
-    });
-  }
-
   /* ---------- starter picker ---------- */
   var CREATURES = [
-    { src: 'assets/creature-3.png', alt: 'Evo #3, teal body, wink face, gold glow', caption: 'Evo #3 · Teal · Wink · Gold Glow · Rare' },
-    { src: 'assets/creature-4.png', alt: 'Evo #4, violet body, wink face, silver crown', caption: 'Evo #4 · Violet · Wink · Silver Crown · Rare' },
-    { src: 'assets/creature-1.png', alt: 'Evo #1, sky body, determined face, red beanie', caption: 'Evo #1 · Sky · Determined · Red Beanie · Common' },
-    { src: 'assets/creature-2.png', alt: 'Evo #2, lime body, happy face, bat wings', caption: 'Evo #2 · Lime · Happy · Bat Wings · Uncommon' },
-    { src: 'assets/creature-5.png', alt: 'Evo #5, mint body, wink face, big horns', caption: 'Evo #5 · Mint · Wink · Big Horns · Uncommon' },
-    { src: 'assets/creature-8.png', alt: 'Evo #8, coral body, mischievous face, red beanie', caption: 'Evo #8 · Coral · Mischievous · Red Beanie · Uncommon' },
-    { src: 'assets/creature-16.png', alt: 'Evo #16, orange body, determined face, big horns', caption: 'Evo #16 · Orange · Determined · Big Horns · Uncommon' },
-    { src: 'assets/creature-17.png', alt: 'Evo #17, pink body, happy face, silver crown', caption: 'Evo #17 · Pink · Happy · Silver Crown · Uncommon' },
+    { src: 'assets/creature-3.png', alt: 'Evo #3, teal body, wink face, gold glow', caption: 'Evo #3 · Teal · Wink · Gold Glow' },
+    { src: 'assets/creature-4.png', alt: 'Evo #4, violet body, wink face, silver crown', caption: 'Evo #4 · Violet · Wink · Silver Crown' },
+    { src: 'assets/creature-1.png', alt: 'Evo #1, sky body, determined face, red beanie', caption: 'Evo #1 · Sky · Determined · Red Beanie' },
+    { src: 'assets/creature-2.png', alt: 'Evo #2, lime body, happy face, bat wings', caption: 'Evo #2 · Lime · Happy · Bat Wings' },
+    { src: 'assets/creature-5.png', alt: 'Evo #5, mint body, wink face, big horns', caption: 'Evo #5 · Mint · Wink · Big Horns' },
+    { src: 'assets/creature-8.png', alt: 'Evo #8, coral body, mischievous face, red beanie', caption: 'Evo #8 · Coral · Mischievous · Red Beanie' },
+    { src: 'assets/creature-16.png', alt: 'Evo #16, orange body, determined face, big horns', caption: 'Evo #16 · Orange · Determined · Big Horns' },
+    { src: 'assets/creature-17.png', alt: 'Evo #17, pink body, happy face, silver crown', caption: 'Evo #17 · Pink · Happy · Silver Crown' },
   ];
   var pickerImg = document.getElementById('picker-img');
   var pickerCaption = document.getElementById('picker-caption');
@@ -105,6 +95,11 @@
     current = (i + CREATURES.length) % CREATURES.length;
     var c = CREATURES[current];
     pickerImg.classList.add('is-fading');
+    if (frame) {
+      frame.classList.remove('is-bounce');
+      void frame.offsetWidth; // restart the bounce keyframe
+      frame.classList.add('is-bounce');
+    }
     window.setTimeout(function () {
       pickerImg.src = c.src;
       pickerImg.alt = c.alt;

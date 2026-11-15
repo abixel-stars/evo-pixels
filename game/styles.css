@@ -1,21 +1,24 @@
-/* Evo Pixels Mini App — style: true-black-flat (seed 2086769900), brand palette kept.
-   Face: dark-purple ground from the product's world, the round creature disc as the
-   signature element, teal #2AB5A6 as the one data hue. Gold #FFC93C only for coins
-   and rarity status. No gradients, no glass, no shadows at rest. Grid: 480px max,
-   one 16px gutter, 16px card padding. */
-/* Self-hosted fonts (latin subsets, downloaded from Google Fonts): the game
-   must render its real typefaces offline and from file://, with no font CDN. */
+/* Evo Pixels Mini App, improvement pass.
+   Style: true-black-flat (seed 1035074079), face taken from the product:
+   ground = brand dark purple, data hue = brand teal, gold only for coins.
+   Type redraw: Fredoka (display, rounded, playful) + Nunito
+   (text, rounded, readable), both self-hosted variable woff2, the old
+   Press Start 2P / Schibsted pairing is gone.
+   Every menu is its own composition: stage / arena / shelf / path /
+   wardrobe / ceremony. No repeated card rows.
+   Motion: transform + opacity only, spring easing, all gated behind
+   prefers-reduced-motion: no-preference. */
 @font-face {
-  font-family: "Press Start 2P";
-  src: url("assets/fonts/press-start-2p.woff2") format("woff2");
-  font-weight: 400;
+  font-family: "Fredoka";
+  src: url("assets/fonts/fredoka.woff2") format("woff2-variations");
+  font-weight: 300 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: "Schibsted Grotesk";
-  src: url("assets/fonts/schibsted-grotesk.woff2") format("woff2");
-  font-weight: 100 900;
+  font-family: "Nunito";
+  src: url("assets/fonts/nunito.woff2") format("woff2-variations");
+  font-weight: 200 1000;
   font-style: normal;
   font-display: swap;
 }
@@ -36,12 +39,14 @@
   --negative: #e5566f;
   --pill-positive-bg: #172a1d;
   --pill-negative-bg: #2c1a20;
-  --radius-card: 8px;
-  --radius-control: 6px;
+  --radius-card: 12px;
+  --radius-control: 10px;
   --gap: 16px;
   --card-pad: 16px;
-  --font-display: "Press Start 2P", "Schibsted Grotesk", system-ui, sans-serif;
-  --font-text: "Schibsted Grotesk", system-ui, sans-serif;
+  --font-display: "Fredoka", "Nunito", system-ui, sans-serif;
+  --font-text: "Nunito", system-ui, sans-serif;
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --snap: cubic-bezier(0.32, 0.72, 0, 1);
 }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
@@ -51,142 +56,109 @@ body {
   color: var(--text);
   font-family: var(--font-text);
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 .num { font-variant-numeric: tabular-nums; }
 h1 {
   font-family: var(--font-display);
-  font-size: 16px;
-  line-height: 1.6;
-  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 600;
   margin: 8px 0 8px;
+  letter-spacing: -0.01em;
 }
-h2.card-title {
+.section-title {
   font-family: var(--font-display);
-  font-size: 11px;
-  line-height: 1.6;
-  font-weight: 400;
-  margin: 0 0 12px;
-  color: var(--text);
+  font-size: 18px;
+  font-weight: 600;
+  margin: 20px 0 10px;
 }
 .lede { color: var(--muted); margin: 0 0 16px; }
 .note { color: var(--faint); font-size: 12px; line-height: 1.6; margin: 12px 0 0; }
 
 .app { max-width: 480px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; }
 
-/* Top bar — 48px, carries the mark, the name, and the coin balance. */
+/* Top bar, the creature wears the header: your Evo's face in a ring,
+   the wordmark, and coins as a purse (gold coin dot + count). */
 .topbar {
-  height: 48px;
+  height: 56px;
   flex: none;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 10px;
   padding: 0 16px;
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 3px solid var(--accent);
+}
+.topbar-art-btn {
+  flex: none;
+  border: none; background: none; padding: 0;
+  border-radius: 50%;
+  transition: transform 0.18s var(--spring);
+}
+.topbar-art-btn:active { transform: scale(0.9); }
+.topbar-art {
+  display: block;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  background: var(--ground);
+  object-fit: cover;
 }
 .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
-.mark {
-  flex: none;
-  border-radius: 4px;
-  display: block;
+.brand-name { font-family: var(--font-display); font-size: 17px; font-weight: 600; white-space: nowrap; }
+.coins {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 6px;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  padding: 4px 10px 4px 6px;
+  font-size: 14px;
 }
-.brand-name { font-family: var(--font-display); font-size: 11px; white-space: nowrap; }
-.coins { font-size: 14px; }
-.coins-num { color: var(--gold); font-weight: 800; }
+.coin-dot {
+  flex: none;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: inset 0 0 0 3px #d99e12;
+}
+.coins-num { color: var(--gold); font-weight: 800; font-family: var(--font-display); font-size: 17px; }
 .coins-label { color: var(--muted); }
 
 .canvas { flex: 1; padding: 16px 16px 24px; }
 .view[hidden] { display: none; }
 
-/* Cards: flat surface, 1px border, no shadow. */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-card);
-  padding: var(--card-pad);
-  margin-bottom: var(--gap);
-}
-.creature-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-card);
-  padding: var(--card-pad);
-  margin-bottom: var(--gap);
-  text-align: center;
-}
-/* Signature element: the round creature disc. */
-.disc {
-  width: 220px; height: 220px;
-  margin: 4px auto 12px;
-  border-radius: 50%;
-  overflow: hidden;
-  background: var(--ground);
-  border: 1px solid var(--border);
-}
-.disc img { width: 100%; height: 100%; object-fit: cover; image-rendering: auto; display: block; }
-.disc-small { width: 120px; height: 120px; margin: 0 auto 8px; }
-.creature-name { font-size: 16px; font-weight: 800; margin: 0 0 4px; }
-.creature-traits { color: var(--muted); margin: 0 0 12px; }
-.level-line {
-  display: flex; justify-content: space-between;
-  font-size: 14px; margin: 0 0 6px;
-}
-.xp-note { color: var(--faint); font-size: 12px; margin: 6px 0 0; }
-.chip {
-  display: inline-block;
-  font-size: 11px; font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 999px;
-  border: 1px solid var(--accent);
-  color: var(--accent);
-  vertical-align: middle;
-  white-space: nowrap;
-}
-.chip-rarity { border-color: var(--gold); color: var(--gold); }
-
-/* Bars: 8px track, teal fill is the one data hue. */
-.bar {
-  height: 8px;
-  background: var(--raised);
-  border-radius: 999px;
-  overflow: hidden;
-}
-.bar-fill { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
-.xp-bar { margin: 0; }
-
-.stat-row {
-  display: flex; align-items: center; gap: 12px;
-  margin-bottom: 10px;
-}
-.stat-label { width: 78px; flex: none; font-size: 14px; }
-.stat-bar { flex: 1; }
-.stat-num { width: 28px; flex: none; text-align: right; }
-.stat-note { color: var(--faint); font-size: 12px; line-height: 1.6; margin: 4px 0 12px; }
-
-/* Buttons: one inverted primary per screen; secondary is outlined. */
+/* Buttons: one inverted primary per screen; secondary is outlined.
+   Chunky, springy press. */
 button { font-family: inherit; cursor: pointer; }
 button:disabled { opacity: 0.45; cursor: not-allowed; }
 .btn-primary {
   display: block; width: 100%;
-  height: 44px;
+  min-height: 48px;
   border: none;
   border-radius: 999px;
   background: #ffffff;
   color: #111111;
-  font-size: 14px; font-weight: 800;
+  font-family: var(--font-display);
+  font-size: 16px; font-weight: 600;
+  transition: transform 0.18s var(--spring), background-color 0.15s ease;
 }
+.btn-primary:active { transform: scale(0.96); }
 .btn-care {
-  flex: 1;
-  min-height: 48px;
+  width: 100%;
+  min-height: 52px;
   padding: 8px 6px;
   border: 1px solid var(--control);
   border-radius: var(--radius-control);
   background: transparent;
   color: var(--text);
-  font-size: 14px; font-weight: 600;
+  font-family: var(--font-display);
+  font-size: 15px; font-weight: 600;
+  transition: transform 0.18s var(--spring), border-color 0.15s ease;
 }
+.btn-care:active { transform: scale(0.95); }
 .care-cost {
   display: block;
+  font-family: var(--font-text);
   font-size: 11px; font-weight: 400;
   color: var(--muted);
   margin-top: 2px;
@@ -202,7 +174,86 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
   text-underline-offset: 3px;
   padding: 8px;
 }
-.care-actions { display: flex; gap: 8px; }
+.link-btn {
+  border: none; background: none; padding: 0;
+  color: var(--accent);
+  font-size: 14px; font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* The creature disc, the signature element, and the animation stage. */
+.disc {
+  width: 220px; height: 220px;
+  margin: 4px auto 12px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--ground);
+  border: 1px solid var(--border);
+  position: relative;
+}
+.disc img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.disc-small { width: 120px; height: 120px; margin: 0 auto 8px; }
+.creature-name { font-family: var(--font-display); font-size: 19px; font-weight: 600; margin: 0 0 4px; }
+.creature-traits { color: var(--muted); margin: 0 0 6px; }
+.skin-line { color: var(--muted); font-size: 13px; margin: 0 0 12px; }
+.level-line {
+  display: flex; justify-content: space-between;
+  font-size: 14px; margin: 0 0 6px;
+}
+.xp-note { color: var(--faint); font-size: 12px; margin: 6px 0 0; }
+.chip {
+  display: inline-block;
+  font-size: 11px; font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* Bars: 8px track, teal fill is the one data hue. */
+.bar {
+  height: 8px;
+  background: var(--raised);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.bar-fill { display: block; height: 100%; background: var(--accent); border-radius: 999px; transition: width 0.35s var(--snap); }
+.xp-bar { margin: 0; }
+
+/* ---------- HOME: the stage ---------- */
+.stage { text-align: center; margin-bottom: 8px; position: relative; }
+.stage .disc { cursor: pointer; }
+
+/* Care as three vertical gauge columns. */
+.gauges { display: flex; gap: 12px; margin-bottom: 4px; }
+.gauge-col {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 12px 8px;
+}
+.gauge-num { font-family: var(--font-display); font-size: 24px; font-weight: 700; line-height: 1; }
+.gauge-track {
+  width: 26px; height: 110px;
+  margin: 10px 0;
+  background: var(--raised);
+  border-radius: 999px;
+  position: relative;
+  overflow: hidden;
+}
+.gauge-fill {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: var(--accent);
+  border-radius: 999px;
+  transition: height 0.35s var(--snap);
+}
+.gauge-label { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+.stat-note { color: var(--faint); font-size: 12px; line-height: 1.6; margin: 10px 0 0; }
 .care-msg, .battle-msg { min-height: 20px; color: var(--positive); font-size: 13px; margin: 10px 0 0; }
 .daily-note { color: var(--faint); font-size: 12px; margin: 4px 0 0; }
 
@@ -215,10 +266,21 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 }
 .evolve-banner p { margin: 0 0 12px; }
 .evolve-banner .btn-primary { background: var(--gold); }
-.odds { color: var(--muted); font-size: 13px; }
-.evolve-rarity-line { font-size: 16px; font-weight: 800; text-align: center; margin: 16px 0 8px; }
 
-/* Picker: 2 columns, selection is a 1px teal line. */
+/* Record: one divided strip, big numbers, label under value. */
+.record-strip {
+  display: flex;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 14px 0;
+  margin-top: 20px;
+}
+.record-strip > div { flex: 1; text-align: center; }
+.record-strip > div + div { border-left: 1px solid var(--rule); }
+.record-num { display: block; font-family: var(--font-display); font-size: 26px; font-weight: 600; }
+.record-label { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+
+/* ---------- PICKER: the toy shelf ---------- */
 .picker-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -232,21 +294,25 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
   padding: 12px;
   text-align: center;
   color: var(--text);
+  transition: transform 0.18s var(--spring), border-color 0.15s ease;
 }
+.picker-card:nth-child(even) { margin-top: 14px; }
+.picker-card:active { transform: scale(0.97); }
 .picker-card img { width: 96px; height: 96px; object-fit: cover; display: block; margin: 0 auto 8px; border-radius: 50%; background: var(--ground); }
-.picker-card .picker-name { font-weight: 800; font-size: 14px; margin: 0 0 2px; }
+.picker-card .picker-name { font-family: var(--font-display); font-weight: 600; font-size: 16px; margin: 0 0 2px; }
 .picker-card .picker-traits { color: var(--muted); font-size: 12px; line-height: 1.5; margin: 0; }
-.picker-card.selected { border: 1px solid var(--accent); }
+.picker-card.selected { border: 2px solid var(--accent); }
 .picker-detail { color: var(--muted); font-size: 13px; margin: 0 0 12px; text-align: center; }
 
-/* Record: one divided strip, label over value. */
-.record-grid { display: flex; }
-.record-grid > div { flex: 1; text-align: center; }
-.record-grid > div + div { border-left: 1px solid var(--rule); }
-.record-num { display: block; font-size: 24px; font-weight: 400; }
-.record-label { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
-
-/* Battle */
+/* ---------- BATTLE: the arena ---------- */
+.arena-empty {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 28px 16px;
+  text-align: center;
+}
+.arena-note { color: var(--muted); margin: 0 0 16px; }
 .fighters { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; }
 .fighter {
   flex: 1; min-width: 0;
@@ -255,83 +321,382 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
   border-radius: var(--radius-card);
   padding: 12px;
   text-align: center;
+  position: relative;
 }
-.fighter-name { font-weight: 800; font-size: 14px; margin: 0 0 2px; }
+.fighter-name { font-family: var(--font-display); font-weight: 600; font-size: 15px; margin: 0 0 2px; }
 .fighter-level { color: var(--muted); font-size: 12px; margin: 0 0 8px; }
 .hp-line { display: flex; justify-content: space-between; font-size: 13px; margin: 0 0 4px; }
-.hp-bar { margin-bottom: 6px; }
+.hp-bar { margin-bottom: 6px; height: 10px; }
+.hp-bar .bar-fill { transition: width 0.4s var(--snap); }
 .fighter-status { color: var(--faint); font-size: 12px; min-height: 18px; margin: 0; }
 .vs {
   flex: none;
   align-self: center;
   font-family: var(--font-display);
-  font-size: 11px;
+  font-size: 15px; font-weight: 700;
   color: var(--muted);
 }
 .battle-note { color: var(--muted); font-size: 13px; margin: 0 0 12px; }
-.battle-actions { display: flex; gap: 8px; margin-bottom: 12px; }
-.battle-actions .btn-primary { flex: 1; width: auto; }
+.battle-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.battle-actions .btn-attack { grid-column: 1 / -1; }
 .item-picker { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
 .item-picker .btn-care { flex: 1; }
-.log-card { margin-top: 12px; }
-.log { list-style: none; margin: 0; padding: 0; }
+.log-wrap { margin-top: 12px; }
+.log-wrap .section-title { margin-top: 0; }
+.log { list-style: none; margin: 0; padding: 0; max-height: 180px; overflow-y: auto; }
 .log li {
   font-size: 13px; line-height: 1.5;
   padding: 8px 0;
   border-top: 1px solid var(--rule);
 }
 .log li:first-child { border-top: none; padding-top: 0; }
-.result-line { font-size: 15px; font-weight: 800; text-align: center; margin: 16px 0 12px; }
-.arena-note { color: var(--muted); margin: 0 0 12px; }
+.result-line { font-family: var(--font-display); font-size: 18px; font-weight: 600; text-align: center; margin: 16px 0 12px; }
 
-/* Lists: rows with 1px rules, numbers right-aligned. */
-.item-list, .quest-list { list-style: none; margin: 0; padding: 0; }
-.item-row {
+/* Floating combat/effect chips: damage numbers, care gains. */
+.float-text {
+  position: absolute;
+  left: 50%; top: 10px;
+  transform: translateX(-50%);
+  font-family: var(--font-display);
+  font-size: 20px; font-weight: 700;
+  color: var(--text);
+  pointer-events: none;
+  z-index: 5;
+  white-space: nowrap;
+}
+.float-text.gold { color: var(--gold); }
+.float-text.good { color: var(--positive); }
+.float-text.hurt { color: var(--negative); }
+
+/* ---------- EVOLVE: the ceremony ---------- */
+.ceremony {
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--gold);
+  border-radius: 16px;
+  padding: 20px 16px;
+  margin-bottom: var(--gap);
+  position: relative;
+}
+.sparkles { position: absolute; inset: 0; pointer-events: none; }
+.spark {
+  position: absolute;
+  left: 50%; top: 110px;
+  width: 9px; height: 9px;
+  background: var(--gold);
+  border-radius: 2px;
+}
+
+/* ---------- ITEMS: the shelf ---------- */
+.shelf {
+  display: flex; gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+}
+.shelf-tile {
+  flex: none;
+  width: 118px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 14px 10px;
+  text-align: center;
+}
+.shelf-tile .shelf-name { font-family: var(--font-display); font-weight: 600; font-size: 15px; margin: 0 0 2px; }
+.shelf-tile .shelf-desc { color: var(--muted); font-size: 11px; line-height: 1.4; margin: 0 0 8px; min-height: 30px; }
+.shelf-tile .shelf-count { display: block; font-family: var(--font-display); font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+.shelf-tile .shelf-count small { font-size: 12px; color: var(--muted); font-weight: 400; }
+.shelf-tile .item-btn { width: 100%; }
+.shop-list { list-style: none; margin: 0; padding: 0; }
+.shop-row {
   display: flex; align-items: center; gap: 12px;
-  padding: 12px 0;
+  padding: 14px 0;
   border-top: 1px solid var(--rule);
 }
-.item-row:first-child { border-top: none; padding-top: 0; }
-.item-row:last-child { padding-bottom: 0; }
-.item-info { flex: 1; min-width: 0; }
-.item-name { font-weight: 600; margin: 0; }
-.item-desc { color: var(--muted); font-size: 12px; margin: 2px 0 0; line-height: 1.5; }
-.item-count { font-weight: 800; white-space: nowrap; }
+.shop-row:first-child { border-top: none; padding-top: 0; }
+.shop-row:last-child { padding-bottom: 0; }
+.shop-info { flex: 1; min-width: 0; }
+.shop-name { font-family: var(--font-display); font-weight: 600; font-size: 16px; margin: 0; }
+.shop-desc { color: var(--muted); font-size: 12px; margin: 2px 0 0; line-height: 1.5; }
+.shop-price { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--gold); white-space: nowrap; }
+.shop-price small { font-family: var(--font-text); font-size: 12px; font-weight: 400; color: var(--muted); }
+.confetti-bit {
+  position: absolute;
+  left: 50%; top: 12px;
+  width: 8px; height: 8px;
+  background: var(--gold);
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 5;
+}
 .item-btn {
   flex: none;
-  min-height: 36px; padding: 6px 14px;
+  min-height: 38px; padding: 6px 16px;
   border: 1px solid var(--control);
   border-radius: var(--radius-control);
   background: transparent; color: var(--text);
-  font-size: 13px; font-weight: 600;
+  font-family: var(--font-display);
+  font-size: 14px; font-weight: 600;
   white-space: nowrap;
+  transition: transform 0.18s var(--spring);
 }
-.quest-row { padding: 12px 0; border-top: 1px solid var(--rule); }
-.quest-row:first-child { border-top: none; padding-top: 0; }
-.quest-row:last-child { padding-bottom: 0; }
-.quest-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-.quest-name { font-weight: 800; margin: 0; }
-.quest-status { font-size: 12px; font-weight: 600; white-space: nowrap; }
-.quest-status.done { color: var(--positive); }
-.quest-status.soon { color: var(--faint); }
+.item-btn:active { transform: scale(0.95); }
+
+/* ---------- QUESTS: the path ---------- */
+.quest-path { list-style: none; margin: 0; padding: 0; position: relative; }
+.quest-path::before {
+  content: "";
+  position: absolute;
+  left: 11px; top: 10px; bottom: 10px;
+  width: 2px;
+  background: var(--rule);
+}
+.quest-node { position: relative; padding: 0 0 22px 38px; }
+.quest-node:last-child { padding-bottom: 0; }
+.quest-dot {
+  position: absolute; left: 0; top: 2px;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--faint);
+  background: var(--ground);
+}
+.quest-node.done .quest-dot { background: var(--gold); border-color: var(--gold); }
+.quest-node.progress .quest-dot { border-color: var(--accent); }
+.quest-name { font-family: var(--font-display); font-weight: 600; font-size: 16px; margin: 0; }
+.quest-status { font-size: 12px; font-weight: 700; }
+.quest-node.done .quest-status { color: var(--gold); }
+.quest-node.progress .quest-status { color: var(--positive); }
+.quest-node.soon .quest-status { color: var(--faint); }
 .quest-desc { color: var(--muted); font-size: 13px; margin: 4px 0 0; }
 .quest-progress { color: var(--faint); font-size: 12px; margin: 4px 0 0; }
 
-/* Bottom tab bar: 4 destinations, active label brightens. */
+/* ---------- SKINS: the wardrobe ---------- */
+.skins-coins { font-size: 15px; margin: 0 0 12px; }
+.skins-coins .num { color: var(--gold); font-family: var(--font-display); font-size: 18px; font-weight: 700; }
+.skin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.skin-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 10px;
+  text-align: center;
+  transition: transform 0.18s var(--spring), border-color 0.15s ease;
+}
+.skin-card:active { transform: scale(0.97); }
+.skin-card.equipped { border: 2px solid var(--accent); }
+.skin-card img { width: 100%; border-radius: 8px; display: block; margin-bottom: 8px; }
+.skin-name { font-family: var(--font-display); font-weight: 600; font-size: 15px; margin: 0 0 2px; }
+.skin-traits { color: var(--muted); font-size: 11px; line-height: 1.5; margin: 0 0 8px; min-height: 32px; }
+.skin-price { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--gold); margin: 0 0 8px; }
+.skin-price.free { color: var(--positive); }
+.skin-lock { color: var(--faint); font-size: 11px; margin: 0 0 8px; }
+.skin-card .btn-care { min-height: 40px; }
+
+/* Bottom dock: a floating game bar, each tab with its own pixel glyph.
+   Active tab is a filled teal pill; the glyph turns dark on it. */
 .tabbar {
   flex: none;
   display: flex;
-  border-top: 1px solid var(--rule);
-  background: var(--ground);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  gap: 4px;
+  margin: 0 12px calc(12px + env(safe-area-inset-bottom, 0px));
+  padding: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
 }
 .tab {
   flex: 1;
   min-height: 52px;
   border: none;
   background: none;
-  color: #bbb;
-  font-size: 13px; font-weight: 600;
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: 12px; font-weight: 600;
+  border-radius: 14px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+  transition: transform 0.15s var(--spring), background-color 0.15s ease, color 0.15s ease;
 }
-.tab.active { color: #fff; }
+.tab:active { transform: scale(0.94); }
+.tab.active { background: var(--accent); color: #082622; }
+.tab-glyph { width: 12px; height: 12px; flex: none; }
+.glyph-home { background: var(--accent); border-radius: 3px; }
+.glyph-battle { background: #e85d5d; transform: rotate(45deg); border-radius: 2px; }
+.glyph-items { background: var(--gold); border-radius: 50%; }
+.glyph-quests { background: #8a6fe0; border-radius: 3px; }
+.glyph-skins { background: #e87fb0; border-radius: 50%; }
+.tab.active .tab-glyph { background: #082622; }
+
+/* ---------- LOGIN: the welcome mat ---------- */
+.login-mascot { text-align: center; margin: 12px 0 4px; }
+.login-mascot img { width: 120px; height: 120px; border-radius: 50%; border: 2px solid var(--accent); background: var(--surface); object-fit: cover; display: inline-block; }
+#view-login h1 { text-align: center; }
+#view-login .lede { text-align: center; margin-inline: auto; }
+.login-options { display: flex; flex-direction: column; gap: 10px; margin: 20px 0 12px; }
+.login-btn {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; min-height: 56px;
+  padding: 0 18px;
+  border: none; border-radius: 16px;
+  font-family: var(--font-display); font-size: 16px; font-weight: 600;
+  transition: transform 0.18s var(--spring);
+}
+.login-btn:active { transform: scale(0.96); }
+.login-mark {
+  flex: none;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 18px; font-weight: 700;
+}
+.login-google { background: #ffffff; color: #1f1f1f; }
+.login-google .login-mark { background: #f2f2f2; color: #4285f4; }
+.login-facebook { background: #1464d2; color: #ffffff; }
+.login-facebook .login-mark { background: rgba(255,255,255,0.22); color: #ffffff; }
+.login-x { background: #000000; color: #ffffff; border: 1px solid var(--border); }
+.login-x .login-mark { background: #222222; color: #ffffff; }
+.login-wallet { background: var(--accent); color: #082622; }
+.login-wallet .coin-mark { background: var(--gold); box-shadow: inset 0 0 0 3px #d99e12; }
+.login-honest { color: var(--faint); font-size: 12px; line-height: 1.6; text-align: center; margin: 4px 0 0; }
+.login-wallet-note { color: var(--gold); font-size: 13px; line-height: 1.5; text-align: center; margin: 12px 0 0; }
+.login-msg { min-height: 20px; color: var(--positive); font-size: 13px; text-align: center; margin: 10px 0 0; }
+#login-back { margin-top: 12px; }
+
+/* ---------- ACCOUNT: one row on Home ---------- */
+.account-row {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 14px;
+  margin-top: 20px;
+}
+.account-info { flex: 1; min-width: 0; }
+.account-title { font-family: var(--font-display); font-weight: 600; font-size: 15px; margin: 0 0 6px; }
+.account-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.account-chip {
+  display: inline-block;
+  font-size: 12px; font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--control);
+  color: var(--text);
+  white-space: nowrap;
+}
+.account-none { color: var(--faint); font-size: 13px; }
+.account-note { color: var(--gold); font-size: 12px; line-height: 1.5; margin: 8px 0 0; }
+.btn-care.account-manage { flex: none; width: auto; min-height: 40px; padding: 8px 16px; }
+
+/* Telegram strip: the one place that points out of the game. */
+.tg-strip {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: var(--surface);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 12px 12px 0;
+  padding: 12px 14px;
+  color: var(--muted);
+  font-size: 13px; line-height: 1.5;
+  margin: 16px 0 0;
+}
+.tg-glyph { flex: none; width: 12px; height: 12px; margin-top: 3px; background: var(--accent); border-radius: 3px; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---------- MOTION: transform + opacity only, spring easing.
+   Everything below applies ONLY when the user has not asked for
+   reduced motion. Without it, content simply appears. ---------- */
+@keyframes breathe {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-5px) scale(1.02); }
+}
+@keyframes squash {
+  0% { transform: scale(1, 1); }
+  30% { transform: scale(1.16, 0.78); }
+  60% { transform: scale(0.92, 1.1); }
+  100% { transform: scale(1, 1); }
+}
+@keyframes hop {
+  0%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-16px); }
+}
+@keyframes jump-wiggle {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  35% { transform: translateY(-20px) rotate(-4deg); }
+  70% { transform: translateY(0) rotate(3deg); }
+}
+@keyframes droop {
+  0% { transform: translateY(0) scale(1, 1); }
+  100% { transform: translateY(7px) scale(1.05, 0.9); }
+}
+@keyframes lunge-r {
+  0% { transform: translateX(0); }
+  35% { transform: translateX(26px); }
+  100% { transform: translateX(0); }
+}
+@keyframes lunge-l {
+  0% { transform: translateX(0); }
+  35% { transform: translateX(-26px); }
+  100% { transform: translateX(0); }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-7px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(3px); }
+}
+@keyframes ko-fall {
+  to { transform: translateY(16px) rotate(14deg); opacity: 0.35; }
+}
+@keyframes celebrate {
+  0%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-18px); }
+  60% { transform: translateY(0); }
+  80% { transform: translateY(-8px); }
+}
+@keyframes float-up {
+  0% { opacity: 0; transform: translate(-50%, 4px) scale(0.8); }
+  18% { opacity: 1; transform: translate(-50%, 0) scale(1.05); }
+  100% { opacity: 0; transform: translate(-50%, -48px) scale(1); }
+}
+@keyframes spark-burst {
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(0.4) rotate(0deg); }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px))) scale(1.15) rotate(120deg); }
+}
+@keyframes confetti-fall {
+  0% { opacity: 1; transform: translate(-50%, 0) rotate(0deg); }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--dx, 0px)), 96px) rotate(280deg); }
+}
+@keyframes view-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes evolve-grow {
+  0% { transform: scale(0.55); }
+  60% { transform: scale(1.14); }
+  100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The creature is alive on its stage. */
+  .stage .disc img { animation: breathe 3.4s ease-in-out infinite; }
+  .ceremony .disc img { animation: breathe 3.4s ease-in-out infinite; }
+  .disc.anim-squash img { animation: squash 0.5s var(--spring); }
+  .disc.anim-hop img { animation: hop 0.45s ease-out 2; }
+  .disc.anim-jump img { animation: jump-wiggle 0.7s var(--spring); }
+  .disc.anim-droop img { animation: droop 1s ease-in-out forwards; }
+  .disc.anim-grow img { animation: evolve-grow 0.8s var(--spring); }
+  /* Battle: lunge, shake, fall, celebrate. */
+  .fighter.anim-lunge-r { animation: lunge-r 0.45s var(--snap); }
+  .fighter.anim-lunge-l { animation: lunge-l 0.45s var(--snap); }
+  .fighter.anim-shake { animation: shake 0.45s ease-in-out; }
+  .fighter.anim-ko { animation: ko-fall 0.6s ease-in forwards; }
+  /* The loser stays down after the fall (kept until the next battle). */
+  .fighter.is-ko { transform: translateY(16px) rotate(14deg); opacity: 0.35; transition: transform 0.6s ease-in, opacity 0.6s ease-in; }
+  .fighter.anim-celebrate { animation: celebrate 0.8s var(--spring) 2; }
+  /* Floating chips and sparkles. */
+  .float-text { animation: float-up 0.95s ease-out forwards; }
+  .spark { animation: spark-burst 0.85s ease-out forwards; }
+  .confetti-bit { animation: confetti-fall 0.9s ease-in forwards; }
+  /* Menu changes rise in. */
+  .view.view-enter { animation: view-in 0.22s var(--snap); }
+}

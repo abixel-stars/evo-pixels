@@ -12,93 +12,124 @@
 <body>
 <div class="app">
   <header class="topbar">
-    <div class="brand"><svg class="mark" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" fill="#2ab5a6"/><rect x="6" y="6" width="6" height="6" fill="#1e1233"/><rect x="12" y="12" width="6" height="6" fill="#1e1233"/></svg><span class="brand-name">Evo Pixels</span></div>
-    <div class="coins num" id="coins"><span class="coins-num" id="coins-num">0</span> <span class="coins-label">coins</span></div>
+    <button class="topbar-art-btn" id="topbar-art-btn" type="button" aria-label="Account">
+      <img class="topbar-art" id="topbar-art" src="assets/hero-creature.webp" alt="Evo Pixels" width="36" height="36">
+    </button>
+    <div class="brand"><span class="brand-name">Evo Pixels</span></div>
+    <div class="coins" id="coins"><span class="coin-dot" aria-hidden="true"></span><span class="coins-num num" id="coins-num">0</span> <span class="coins-label">coins</span></div>
   </header>
 
   <main class="canvas" id="canvas">
 
-    <!-- STARTER PICKER -->
+    <!-- LOGIN: first run + account management -->
+    <section class="view" id="view-login" hidden>
+      <div class="login-mascot"><img src="assets/hero-creature.webp" alt="Evo Pixels creature" width="120" height="120"></div>
+      <div id="login-welcome">
+        <h1>Welcome to Evo Pixels</h1>
+        <p class="lede">Pick how to save your progress. Your creature, XP and coins live on this device.</p>
+      </div>
+      <div id="login-has-account" hidden>
+        <h1>Your account</h1>
+        <p class="lede">These are linked to your game. Link another method any time.</p>
+        <div class="account-chips" id="login-methods"></div>
+      </div>
+      <div class="login-options">
+        <button class="login-btn login-google" id="login-google" type="button"><span class="login-mark" aria-hidden="true">G</span>Continue with Google</button>
+        <button class="login-btn login-facebook" id="login-facebook" type="button"><span class="login-mark" aria-hidden="true">f</span>Continue with Facebook</button>
+        <button class="login-btn login-x" id="login-x" type="button"><span class="login-mark" aria-hidden="true">X</span>Continue with X</button>
+        <button class="login-btn login-wallet" id="login-wallet" type="button"><span class="login-mark coin-mark" aria-hidden="true"></span>Connect Wallet</button>
+      </div>
+      <p class="login-honest">Wallet connects for real (Phantom / Solflare). Google, Facebook and X save a local link on this device for now. You'll connect them for real before claiming rewards or the airdrop.</p>
+      <p class="login-wallet-note" id="login-wallet-note" hidden>Heads up: you logged in with a wallet only. To claim rewards or the airdrop later, you'll also need to link Google, Facebook or X.</p>
+      <p class="login-msg" id="login-msg" role="status"></p>
+      <button class="btn-text" id="login-skip" type="button">Play first, log in later</button>
+      <button class="btn-primary" id="login-back" type="button" hidden>Back to game</button>
+    </section>
+
+    <!-- STARTER PICKER: the toy shelf -->
     <section class="view" id="view-picker" hidden>
       <h1>Choose your starter</h1>
       <p class="lede">Pick one Evo to raise. You keep this one. The other seven become your rivals in the arena.</p>
       <div class="picker-grid" id="picker-grid" role="listbox" aria-label="Starter creatures"></div>
       <p class="picker-detail" id="picker-detail">Tap a creature to see its traits.</p>
       <button class="btn-primary" id="picker-confirm" disabled>Raise this Evo</button>
-      <p class="note">Every Evo has one element. Ember beats Leaf, Leaf beats Tide, Tide beats Ember. Volt beats Tide and Gale. Gale beats Leaf. Frost beats Leaf and Gale. Charm is neutral against everything.</p>
+      <p class="note">Type chart: every element is strong against two and weak against at least one. Ember beats Leaf + Frost · Leaf beats Tide + Terra · Tide beats Ember + Terra · Volt beats Tide + Gale · Gale beats Leaf + Terra · Frost beats Leaf + Gale · Charm beats Frost + Volt · Terra beats Volt + Ember + Charm. Hits in battle say Super effective or Not very effective.</p>
     </section>
 
-    <!-- HOME -->
+    <!-- HOME: the stage -->
     <section class="view" id="view-home" hidden>
       <h1 id="home-title">Your Evo</h1>
-      <div class="creature-card">
-        <div class="disc"><img id="home-art" src="assets/hero-creature.webp" alt="Your creature" width="220" height="220"></div>
-        <p class="creature-name"><span id="home-name">Evo #3</span> <span class="chip" id="home-element">Tide</span> <span class="chip chip-rarity" id="home-rarity" hidden></span></p>
+      <div class="stage">
+        <div class="disc" id="home-disc"><img id="home-art" src="assets/hero-creature.webp" alt="Your creature" width="220" height="220"></div>
+        <p class="creature-name"><span id="home-name">Evo #3</span> <span class="chip" id="home-element">Tide</span></p>
         <p class="creature-traits" id="home-traits">Teal · Wink · Gold Glow</p>
+        <p class="skin-line">Skin: <strong id="home-skin">Original</strong> · <button class="link-btn" id="home-skin-change" type="button">Change</button></p>
         <p class="level-line"><span>Level <span class="num" id="home-level">1</span></span><span class="num" id="home-xp-text">0 / 30 XP</span></p>
         <div class="bar xp-bar" role="progressbar" aria-label="Experience progress"><span class="bar-fill" id="home-xp-fill" style="width:0%"></span></div>
         <p class="xp-note" id="home-xp-note">30 XP to level 2. Evolves at level 5.</p>
       </div>
 
       <div class="evolve-banner" id="evolve-banner" hidden>
-        <p><strong>Your Evo is ready to evolve.</strong><br>Level 5 reached. Evolving rolls a rarity: Uncommon 71.4%, Rare 24.4%, Legendary 4.2%.</p>
+        <p><strong>Your Evo is ready to evolve.</strong><br>Level 5 reached. Evolving is permanent: +25 max HP, +4 attack, and a new form with white wings and a gold crown.</p>
         <button class="btn-primary" id="evolve-go">Evolve now</button>
       </div>
 
-      <div class="card stats-card">
-        <h2 class="card-title">Care</h2>
-        <div class="stat-row">
-          <span class="stat-label">Hunger</span>
-          <div class="bar stat-bar" role="progressbar" aria-label="Hunger"><span class="bar-fill" id="stat-hunger-fill" style="width:80%"></span></div>
-          <span class="stat-num num" id="stat-hunger-num">80</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Happiness</span>
-          <div class="bar stat-bar" role="progressbar" aria-label="Happiness"><span class="bar-fill" id="stat-happy-fill" style="width:80%"></span></div>
-          <span class="stat-num num" id="stat-happy-num">80</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Energy</span>
-          <div class="bar stat-bar" role="progressbar" aria-label="Energy"><span class="bar-fill" id="stat-energy-fill" style="width:80%"></span></div>
-          <span class="stat-num num" id="stat-energy-num">80</span>
-        </div>
-        <p class="stat-note">Stats fall 1 point per hour while you are away. A hungry Evo (Hunger under 30) attacks 10% weaker in battle.</p>
-        <div class="care-actions">
+      <h2 class="section-title">Care</h2>
+      <div class="gauges">
+        <div class="gauge-col">
+          <span class="gauge-num num" id="stat-hunger-num">80</span>
+          <div class="gauge-track" role="progressbar" aria-label="Hunger"><span class="gauge-fill" id="stat-hunger-fill" style="height:80%"></span></div>
+          <span class="gauge-label">Hunger</span>
           <button class="btn-care" id="btn-feed">Feed<span class="care-cost">+18 Hunger · 1 Food · +8 XP</span></button>
+        </div>
+        <div class="gauge-col">
+          <span class="gauge-num num" id="stat-happy-num">80</span>
+          <div class="gauge-track" role="progressbar" aria-label="Happiness"><span class="gauge-fill" id="stat-happy-fill" style="height:80%"></span></div>
+          <span class="gauge-label">Happiness</span>
           <button class="btn-care" id="btn-play">Play<span class="care-cost">+16 Happiness · 10 Energy · +8 XP</span></button>
+        </div>
+        <div class="gauge-col">
+          <span class="gauge-num num" id="stat-energy-num">80</span>
+          <div class="gauge-track" role="progressbar" aria-label="Energy"><span class="gauge-fill" id="stat-energy-fill" style="height:80%"></span></div>
+          <span class="gauge-label">Energy</span>
           <button class="btn-care" id="btn-rest">Rest<span class="care-cost">+20 Energy · +5 XP</span></button>
         </div>
-        <p class="care-msg" id="care-msg" role="status"></p>
-        <p class="daily-note" id="daily-note"></p>
       </div>
+      <p class="stat-note">Stats fall 1 point per hour while you are away. A hungry Evo (Hunger under 30) attacks 10% weaker in battle.</p>
+      <p class="care-msg" id="care-msg" role="status"></p>
+      <p class="daily-note" id="daily-note"></p>
 
-      <div class="card record-card">
-        <h2 class="card-title">Record</h2>
-        <div class="record-grid">
-          <div><span class="record-num num" id="rec-wins">0</span><span class="record-label">Battles won</span></div>
-          <div><span class="record-num num" id="rec-losses">0</span><span class="record-label">Battles lost</span></div>
-          <div><span class="record-num num" id="rec-cares">0</span><span class="record-label">Care actions</span></div>
-        </div>
+      <div class="record-strip">
+        <div><span class="record-num num" id="rec-wins">0</span><span class="record-label">Battles won</span></div>
+        <div><span class="record-num num" id="rec-losses">0</span><span class="record-label">Battles lost</span></div>
+        <div><span class="record-num num" id="rec-cares">0</span><span class="record-label">Care actions</span></div>
       </div>
-      <p class="note" id="telegram-note" hidden>Open in Telegram for the full experience: haptics and the Battle button in the app bar.</p>
+      <div class="account-row" id="account-row">
+        <div class="account-info">
+          <p class="account-title">Account</p>
+          <div class="account-chips" id="account-methods"></div>
+          <p class="account-note" id="account-note" hidden>To claim rewards or the airdrop later, you'll also need to link Google, Facebook or X.</p>
+        </div>
+        <button class="btn-care account-manage" id="account-manage" type="button">Log in</button>
+      </div>
+      <p class="tg-strip" id="telegram-note" hidden><span class="tg-glyph" aria-hidden="true"></span>Open in Telegram for the full experience: haptics and the Battle button in the app bar.</p>
     </section>
 
-    <!-- BATTLE -->
+    <!-- BATTLE: the arena -->
     <section class="view" id="view-battle" hidden>
       <h1>Battle</h1>
       <p class="lede" id="battle-intro">Win a battle: +30 XP and 15 coins. Lose: +10 XP, no coins. Your opponent's level scales with yours (your level, plus or minus 1).</p>
 
       <div id="battle-lobby">
-        <div class="card">
-          <h2 class="card-title">Arena</h2>
-          <p class="arena-note" id="arena-note">No battle running.</p>
+        <div class="arena-empty">
+          <p class="arena-note" id="arena-note">No battle running. The arena is quiet.</p>
           <button class="btn-primary" id="btn-find-opponent">Find opponent</button>
         </div>
       </div>
 
       <div id="battle-arena" hidden>
         <div class="fighters">
-          <div class="fighter">
+          <div class="fighter" id="fighter-player">
             <div class="disc disc-small"><img id="battle-player-art" src="assets/hero-creature.webp" alt="Your creature" width="120" height="120"></div>
             <p class="fighter-name"><span id="battle-player-name">Evo #3</span> <span class="chip" id="battle-player-element">Tide</span></p>
             <p class="fighter-level">Level <span class="num" id="battle-player-level">1</span></p>
@@ -107,7 +138,7 @@
             <p class="fighter-status" id="battle-player-status"></p>
           </div>
           <div class="vs" aria-hidden="true">VS</div>
-          <div class="fighter">
+          <div class="fighter" id="fighter-bot">
             <div class="disc disc-small"><img id="battle-bot-art" src="assets/creature-1.png" alt="Rival creature" width="120" height="120"></div>
             <p class="fighter-name"><span id="battle-bot-name">Evo #1</span> <span class="chip" id="battle-bot-element">Gale</span></p>
             <p class="fighter-level">Level <span class="num" id="battle-bot-level">1</span></p>
@@ -118,7 +149,7 @@
         </div>
         <p class="battle-note" id="battle-note"></p>
         <div class="battle-actions" id="battle-actions">
-          <button class="btn-primary" id="btn-attack">Attack</button>
+          <button class="btn-primary btn-attack" id="btn-attack">Attack</button>
           <button class="btn-care" id="btn-special">Special<span class="care-cost">1.8x damage · 15 Energy</span></button>
           <button class="btn-care" id="btn-defend">Defend<span class="care-cost">Halve the next hit</span></button>
           <button class="btn-care" id="btn-item">Item<span class="care-cost">Food or Battle Gear</span></button>
@@ -129,8 +160,8 @@
           <button class="btn-text" id="btn-item-cancel">Cancel</button>
         </div>
         <p class="battle-msg" id="battle-msg" role="status"></p>
-        <div class="card log-card">
-          <h2 class="card-title">Battle log</h2>
+        <div class="log-wrap">
+          <h2 class="section-title">Battle log</h2>
           <ul class="log" id="battle-log"></ul>
         </div>
         <div id="battle-result" hidden>
@@ -140,56 +171,59 @@
       </div>
     </section>
 
-    <!-- EVOLVE -->
+    <!-- EVOLVE: the ceremony -->
     <section class="view" id="view-evolve" hidden>
       <h1>Evolution</h1>
-      <div class="creature-card">
-        <div class="disc"><img id="evolve-art" src="assets/hero-creature.webp" alt="Your creature before evolving" width="220" height="220"></div>
+      <div class="ceremony">
+        <div class="disc" id="evolve-disc"><img id="evolve-art" src="assets/hero-creature.webp" alt="Your creature before evolving" width="220" height="220"><span class="sparkles" id="evolve-sparkles" aria-hidden="true"></span></div>
         <p class="creature-name" id="evolve-name">Evo #3</p>
         <p class="creature-traits" id="evolve-traits">Gen 1 · Level 5 · Ready to evolve</p>
       </div>
       <div id="evolve-before">
         <p class="lede">Evolving is permanent. Your Evo gains +25 max HP and +4 attack, and its form changes to the evolved art with white wings and a gold crown.</p>
-        <p class="odds">Rarity roll: Uncommon 71.4% · Rare 24.4% · Legendary 4.2%. The roll is random; the result is shown honestly here.</p>
         <button class="btn-primary" id="btn-evolve-now">Evolve now</button>
         <button class="btn-text" id="btn-evolve-later">Not yet</button>
       </div>
       <div id="evolve-after" hidden>
-        <p class="evolve-rarity-line">Rarity rolled: <span class="chip chip-rarity" id="evolve-rarity">Uncommon</span></p>
         <p class="lede" id="evolve-after-text">Your Evo evolved.</p>
         <button class="btn-primary" id="btn-evolve-home">Back to home</button>
       </div>
     </section>
 
-    <!-- ITEMS -->
+    <!-- ITEMS: the shelf -->
     <section class="view" id="view-items" hidden>
       <h1>Items</h1>
       <p class="lede">Coins: <span class="num" id="items-coins">0</span>. Earn coins by winning battles (+15) and by your first care action each day (+10).</p>
-      <div class="card">
-        <h2 class="card-title">Inventory</h2>
-        <ul class="item-list" id="inventory-list"></ul>
-      </div>
-      <div class="card">
-        <h2 class="card-title">Shop</h2>
-        <ul class="item-list" id="shop-list"></ul>
-        <p class="note">More items coming. The full item shop opens on the website later.</p>
-      </div>
+      <h2 class="section-title">Inventory</h2>
+      <div class="shelf" id="inventory-list"></div>
+      <h2 class="section-title">Shop</h2>
+      <ul class="shop-list" id="shop-list"></ul>
+      <p class="note">More items coming. The full item shop opens on the website later.</p>
     </section>
 
-    <!-- QUESTS -->
+    <!-- QUESTS: the path -->
     <section class="view" id="view-quests" hidden>
       <h1>Quests</h1>
       <p class="lede">Quests are how you earn your place in the $EVO airdrop. Progress below is your real progress in this game.</p>
-      <ul class="quest-list" id="quest-list"></ul>
+      <ol class="quest-path" id="quest-list"></ol>
       <button class="btn-text" id="btn-reset">Reset game</button>
+    </section>
+
+    <!-- SKINS: the wardrobe -->
+    <section class="view" id="view-skins" hidden>
+      <h1>Skins</h1>
+      <p class="lede">Dress your Evo. A skin changes how it looks on Home and in battle. Your creature, its element and its stats stay the same.</p>
+      <p class="skins-coins">Coins: <span class="num" id="skins-coins">0</span></p>
+      <div class="skin-grid" id="skin-grid"></div>
     </section>
   </main>
 
   <nav class="tabbar" id="tabbar" aria-label="Game sections">
-    <button class="tab active" data-tab="home" type="button">Home</button>
-    <button class="tab" data-tab="battle" type="button">Battle</button>
-    <button class="tab" data-tab="items" type="button">Items</button>
-    <button class="tab" data-tab="quests" type="button">Quests</button>
+    <button class="tab active" data-tab="home" type="button"><span class="tab-glyph glyph-home" aria-hidden="true"></span>Home</button>
+    <button class="tab" data-tab="battle" type="button"><span class="tab-glyph glyph-battle" aria-hidden="true"></span>Battle</button>
+    <button class="tab" data-tab="items" type="button"><span class="tab-glyph glyph-items" aria-hidden="true"></span>Items</button>
+    <button class="tab" data-tab="quests" type="button"><span class="tab-glyph glyph-quests" aria-hidden="true"></span>Quests</button>
+    <button class="tab" data-tab="skins" type="button"><span class="tab-glyph glyph-skins" aria-hidden="true"></span>Skins</button>
   </nav>
 </div>
 <script src="app.js"></script>

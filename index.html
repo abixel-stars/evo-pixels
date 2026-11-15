@@ -17,7 +17,7 @@
 
   <!-- ============ NAV ============ -->
   <header class="nav">
-    <a class="logo" href="#top">EVO&nbsp;PIXELS</a>
+    <a class="logo" href="#top"><img class="logo-disc" src="assets/hero-creature.webp" alt="" width="36" height="36">EVO&nbsp;PIXELS</a>
     <nav class="nav-links" aria-label="Main navigation">
       <a href="#creatures">Creatures</a>
       <a href="#game">Game</a>
@@ -41,9 +41,9 @@
           <span class="line"><span data-line style="--i:0">Evo</span></span>
           <span class="line"><span data-line style="--i:1">Pixels</span></span>
         </h1>
-        <p class="lead" data-load style="--d:420ms">A pixel-creature game on Telegram. Raise your creature, battle it, and evolve it into something rare.</p>
+        <p class="lead" data-load style="--d:420ms">A pixel-creature game on Telegram. Raise your creature, battle it, and evolve it into its final form.</p>
         <div data-load style="--d:480ms">
-          <a class="button" href="#game">Play on Telegram</a>
+          <a class="button" href="./game/">Play on Telegram</a>
         </div>
         <p data-load style="--d:540ms"><button id="wallet-btn-hero" class="link-plain" type="button">Connect wallet</button></p>
         <p id="wallet-status" class="wallet-status" role="status"></p>
@@ -62,16 +62,16 @@
         <figure class="picker-frame">
           <img id="picker-img" src="assets/creature-3.png" alt="Evo #3, teal body, wink face, gold glow" width="512" height="512">
         </figure>
-        <p class="picker-caption" id="picker-caption">Evo #3 · Teal · Wink · Gold Glow · Rare</p>
+        <p class="picker-caption" id="picker-caption">Evo #3 · Teal · Wink · Gold Glow</p>
         <div class="picker-thumbs" role="group" aria-label="Choose your starter creature">
-          <button type="button" class="picker-thumb is-active" data-creature="0" aria-label="Evo #3, teal, wink, gold glow, rare"><img src="assets/creature-3.png" alt="" loading="lazy"></button>
-          <button type="button" class="picker-thumb" data-creature="1" aria-label="Evo #4, violet, wink, silver crown, rare"><img src="assets/creature-4.png" alt="" loading="lazy"></button>
-          <button type="button" class="picker-thumb" data-creature="2" aria-label="Evo #1, sky, determined, red beanie, common"><img src="assets/creature-1.png" alt="" loading="lazy"></button>
-          <button type="button" class="picker-thumb" data-creature="3" aria-label="Evo #2, lime, happy, bat wings, uncommon"><img src="assets/creature-2.png" alt="" loading="lazy"></button>
-          <button type="button" class="picker-thumb" data-creature="4" aria-label="Evo #5, mint, wink, big horns, uncommon"><img src="assets/creature-5.png" alt="" loading="lazy"></button>
-          <button type="button" class="picker-thumb" data-creature="5" aria-label="Evo #8, coral, mischievous, red beanie, uncommon"><img src="assets/creature-8.png" alt="" loading="lazy"></button>
-          <button type="button" class="picker-thumb" data-creature="6" aria-label="Evo #16, orange, determined, big horns, uncommon"><img src="assets/creature-16.png" alt="" loading="lazy"></button>
-          <button type="button" class="picker-thumb" data-creature="7" aria-label="Evo #17, pink, happy, silver crown, uncommon"><img src="assets/creature-17.png" alt="" loading="lazy"></button>
+          <button type="button" class="picker-thumb is-active" data-creature="0" aria-label="Evo #3, teal, wink, gold glow"><img src="assets/creature-3.png" alt="" loading="lazy"></button>
+          <button type="button" class="picker-thumb" data-creature="1" aria-label="Evo #4, violet, wink, silver crown"><img src="assets/creature-4.png" alt="" loading="lazy"></button>
+          <button type="button" class="picker-thumb" data-creature="2" aria-label="Evo #1, sky, determined, red beanie"><img src="assets/creature-1.png" alt="" loading="lazy"></button>
+          <button type="button" class="picker-thumb" data-creature="3" aria-label="Evo #2, lime, happy, bat wings"><img src="assets/creature-2.png" alt="" loading="lazy"></button>
+          <button type="button" class="picker-thumb" data-creature="4" aria-label="Evo #5, mint, wink, big horns"><img src="assets/creature-5.png" alt="" loading="lazy"></button>
+          <button type="button" class="picker-thumb" data-creature="5" aria-label="Evo #8, coral, mischievous, red beanie"><img src="assets/creature-8.png" alt="" loading="lazy"></button>
+          <button type="button" class="picker-thumb" data-creature="6" aria-label="Evo #16, orange, determined, big horns"><img src="assets/creature-16.png" alt="" loading="lazy"></button>
+          <button type="button" class="picker-thumb" data-creature="7" aria-label="Evo #17, pink, happy, silver crown"><img src="assets/creature-17.png" alt="" loading="lazy"></button>
         </div>
       </div>
     </section>
@@ -95,12 +95,12 @@
         </div>
         <div class="how-step" data-reveal style="--i:2">
           <h3>Evolve</h3>
-          <p>Raise your creature all the way and it evolves. Fierce face, golden crown, white wings, gold glow. Evolved forms are rare by design.</p>
+          <p>Raise your creature all the way and it evolves. Fierce face, golden crown, white wings, gold glow. Evolved forms are earned, never bought.</p>
         </div>
       </div>
       <div class="center" data-reveal>
-        <a class="button button-big" href="#" id="play-telegram-btn">Play on Telegram</a>
-        <p class="coming-soon">Coming soon. The Telegram Mini App is in development.</p>
+        <a class="button button-big" href="./game/" id="play-telegram-btn">Play on Telegram</a>
+        <p class="coming-soon">Playable now — it opens right in your browser.</p>
       </div>
     </section>
 
@@ -205,6 +205,17 @@
 
   <!-- ============ FOOTER ============ -->
   <footer class="footer">
+    <div class="footer-parade" aria-label="The eight starter creatures">
+      <img src="assets/creature-3.png" alt="Evo #3" width="56" height="56" loading="lazy">
+      <img src="assets/creature-4.png" alt="Evo #4" width="56" height="56" loading="lazy">
+      <img src="assets/creature-1.png" alt="Evo #1" width="56" height="56" loading="lazy">
+      <img src="assets/creature-2.png" alt="Evo #2" width="56" height="56" loading="lazy">
+      <img src="assets/creature-5.png" alt="Evo #5" width="56" height="56" loading="lazy">
+      <img src="assets/creature-8.png" alt="Evo #8" width="56" height="56" loading="lazy">
+      <img src="assets/creature-16.png" alt="Evo #16" width="56" height="56" loading="lazy">
+      <img src="assets/creature-17.png" alt="Evo #17" width="56" height="56" loading="lazy">
+    </div>
+    <p class="footer-parade-note">Meet the eight starters. Every one is equal — pick yours and raise it.</p>
     <div class="mark" aria-label="Evo Pixels">
       <span style="--h:1em;--c:var(--accent)">E</span><span style="--h:.8em;--c:var(--field-1)">V</span><span style="--h:.92em;--c:var(--accent)">O</span><span style="--h:.7em;--c:var(--ink)">P</span><span style="--h:1em;--c:var(--field-1)">I</span><span style="--h:.86em;--c:var(--accent)">X</span><span style="--h:.96em;--c:var(--field-1)">E</span><span style="--h:.74em;--c:var(--ink)">L</span><span style="--h:.9em;--c:var(--accent)">S</span>
     </div>
@@ -226,7 +237,7 @@
       </div>
       <div class="footer-col footer-note">
         <h3>Play</h3>
-        <p>Play on Telegram, coming soon.</p>
+        <p>Play on Telegram, live now.</p>
         <p>Airdrop, months after the event.</p>
       </div>
     </div>
