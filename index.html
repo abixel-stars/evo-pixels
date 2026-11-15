@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evo Pixels — Raise. Battle. Earn.</title>
+  <meta name="description" content="Evo Pixels is a pixel-creature game on Telegram. Raise your creature, battle, complete quests, and earn the $EVO airdrop.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.98.4/lib/index.iife.min.js" defer></script>
+  <script>document.documentElement.classList.add('js')</script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav">
+    <a class="logo" href="#top">EVO&nbsp;PIXELS</a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="#creatures">Creatures</a>
+      <a href="#game">Game</a>
+      <a href="#quests">Quests</a>
+      <a href="#shop">Shop</a>
+      <a href="#airdrop">Airdrop</a>
+    </nav>
+    <button id="wallet-btn-nav" class="button button-small" type="button">Connect Wallet</button>
+  </header>
+
+  <main id="top">
+    <!-- ============ HERO ============ -->
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero-motif" aria-hidden="true">
+        <div class="hero-disc shutter">
+          <img src="assets/hero-creature.webp" alt="" width="512" height="512" fetchpriority="high">
+        </div>
+      </div>
+      <div class="hero-copy">
+        <h1 id="page-title" class="display lines">
+          <span class="line"><span data-line style="--i:0">Evo</span></span>
+          <span class="line"><span data-line style="--i:1">Pixels</span></span>
+        </h1>
+        <p class="lead" data-load style="--d:420ms">A pixel-creature game on Telegram. Raise your creature, battle it, and evolve it into something rare.</p>
+        <div data-load style="--d:480ms">
+          <a class="button" href="#game">Play on Telegram</a>
+        </div>
+        <p data-load style="--d:540ms"><button id="wallet-btn-hero" class="link-plain" type="button">Connect wallet</button></p>
+        <p id="wallet-status" class="wallet-status" role="status"></p>
+      </div>
+    </section>
+
+    <!-- ============ CREATURES / STARTER PICKER ============ -->
+    <section id="creatures" class="section creatures">
+      <div class="creatures-text">
+        <h2 class="head" data-reveal>Choose your starter</h2>
+        <p class="lead" data-reveal style="--i:1">Every Evo starts as a round pixel blob with huge glowing eyes. Body, face, horns, wings, crown and glow are rolled at birth.</p>
+        <p data-reveal style="--i:2">No two are alike. Pick one below and it is yours to raise. The frame cycles through all eight on its own. Tap a creature to stop on it.</p>
+        <p class="evolved-note" data-reveal style="--i:3">Raise it all the way and it evolves. Fierce face, golden crown, white wings, gold glow. Evolved forms are earned, never bought.</p>
+      </div>
+      <div class="picker" data-reveal>
+        <figure class="picker-frame">
+          <img id="picker-img" src="assets/creature-3.png" alt="Evo #3, teal body, wink face, gold glow" width="512" height="512">
+        </figure>
+        <p class="picker-caption" id="picker-caption">Evo #3 · Teal · Wink · Gold Glow · Rare</p>
+        <div class="picker-thumbs" role="group" aria-label="Choose your starter creature">
+          <button type="button" class="picker-thumb is-active" data-creature="0" aria-label="Evo #3, teal, wink, gold glow, rare"><img src="assets/creature-3.png" alt="" loading="lazy"></button>
+          <button type="button" class="picker-thumb" data-creature="1" aria-label="Evo #4, violet, wink, silver crown, rare"><img src="assets/creature-4.png" alt="" loading="lazy"></button>
+          <button type="button" class="picker-thumb" data-creature="2" aria-label="Evo #1, sky, determined, red beanie, common"><img src="assets/creature-1.png" alt="" loading="lazy"></button>
+          <button type="button" class="picker-thumb" data-creature="3" aria-label="Evo #2, lime, happy, bat wings, uncommon"><img src="assets/creature-2.png" alt="" loading="lazy"></button>
+          <button type="button" class="picker-thumb" data-creature="4" aria-label="Evo #5, mint, wink, big horns, uncommon"><img src="assets/creature-5.png" alt="" loading="lazy"></button>
+          <button type="button" class="picker-thumb" data-creature="5" aria-label="Evo #8, coral, mischievous, red beanie, uncommon"><img src="assets/creature-8.png" alt="" loading="lazy"></button>
+          <button type="button" class="picker-thumb" data-creature="6" aria-label="Evo #16, orange, determined, big horns, uncommon"><img src="assets/creature-16.png" alt="" loading="lazy"></button>
+          <button type="button" class="picker-thumb" data-creature="7" aria-label="Evo #17, pink, happy, silver crown, uncommon"><img src="assets/creature-17.png" alt="" loading="lazy"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GAME ============ -->
+    <section id="game" class="section game">
+      <div class="game-head">
+        <h2 class="head" data-reveal>The game</h2>
+        <p class="lead" data-reveal style="--i:1">Evo Pixels is a Telegram Mini App. No download, no install. It lives right inside Telegram.</p>
+      </div>
+      <svg class="how-svg how-svg-wide" viewBox="0 0 1200 260" role="img" aria-label="Pixel squares gather from scattered disorder into a tight ribbon, then fan out into ordered rows"><rect x="293" y="63" width="12" height="12" fill="#3d2a6b"/><rect x="126" y="149" width="12" height="12" fill="#4a3580"/><rect x="104" y="41" width="12" height="12" fill="#3d2a6b"/><rect x="135" y="232" width="12" height="12" fill="#4a3580"/><rect x="231" y="190" width="12" height="12" fill="#3d2a6b"/><rect x="356" y="192" width="12" height="12" fill="#4a3580"/><rect x="47" y="89" width="12" height="12" fill="#3d2a6b"/><rect x="302" y="221" width="12" height="12" fill="#4a3580"/><rect x="353" y="213" width="12" height="12" fill="#3d2a6b"/><rect x="61" y="127" width="12" height="12" fill="#4a3580"/><rect x="303" y="199" width="12" height="12" fill="#3d2a6b"/><rect x="317" y="17" width="12" height="12" fill="#4a3580"/><rect x="365" y="35" width="12" height="12" fill="#3d2a6b"/><rect x="258" y="195" width="12" height="12" fill="#4a3580"/><rect x="175" y="67" width="12" height="12" fill="#3d2a6b"/><rect x="114" y="13" width="12" height="12" fill="#4a3580"/><rect x="282" y="123" width="12" height="12" fill="#3d2a6b"/><rect x="231" y="139" width="12" height="12" fill="#4a3580"/><rect x="243" y="223" width="12" height="12" fill="#3d2a6b"/><rect x="200" y="157" width="12" height="12" fill="#4a3580"/><rect x="318" y="65" width="12" height="12" fill="#3d2a6b"/><rect x="44" y="101" width="12" height="12" fill="#4a3580"/><rect x="308" y="229" width="12" height="12" fill="#3d2a6b"/><rect x="226" y="75" width="12" height="12" fill="#4a3580"/><rect x="128" y="18" width="12" height="12" fill="#3d2a6b"/><rect x="153" y="77" width="12" height="12" fill="#4a3580"/><rect x="69" y="152" width="12" height="12" fill="#3d2a6b"/><rect x="259" y="22" width="12" height="12" fill="#4a3580"/><rect x="62" y="40" width="12" height="12" fill="#3d2a6b"/><rect x="203" y="195" width="12" height="12" fill="#4a3580"/><rect x="167" y="33" width="12" height="12" fill="#3d2a6b"/><rect x="169" y="68" width="12" height="12" fill="#4a3580"/><rect x="94" y="12" width="12" height="12" fill="#3d2a6b"/><rect x="124" y="104" width="12" height="12" fill="#4a3580"/><rect x="312" y="208" width="12" height="12" fill="#3d2a6b"/><rect x="302" y="71" width="12" height="12" fill="#4a3580"/><rect x="96" y="108" width="12" height="12" fill="#3d2a6b"/><rect x="11" y="88" width="12" height="12" fill="#4a3580"/><rect x="129" y="156" width="12" height="12" fill="#3d2a6b"/><rect x="232" y="26" width="12" height="12" fill="#4a3580"/><rect x="412" y="112" width="12" height="12" fill="#2ab5a6"/><rect x="426" y="112" width="12" height="12" fill="#2ab5a6"/><rect x="440" y="112" width="12" height="12" fill="#2ab5a6"/><rect x="454" y="112" width="12" height="12" fill="#2ab5a6"/><rect x="468" y="112" width="12" height="12" fill="#2ab5a6"/><rect x="482" y="112" width="12" height="12" fill="#2ab5a6"/><rect x="496" y="112" width="12" height="12" fill="#2ab5a6"/><rect x="510" y="112" width="12" height="12" fill="#2ab5a6"/><rect x="524" y="112" width="12" height="12" fill="#2ab5a6"/><rect x="538" y="112" width="12" height="12" fill="#2ab5a6"/><rect x="552" y="112" width="12" height="12" fill="#2ab5a6"/><rect x="566" y="112" width="12" height="12" fill="#2ab5a6"/><rect x="580" y="112" width="12" height="12" fill="#2ab5a6"/><rect x="594" y="112" width="12" height="12" fill="#2ab5a6"/><rect x="608" y="112" width="12" height="12" fill="#2ab5a6"/><rect x="622" y="112" width="12" height="12" fill="#2ab5a6"/><rect x="636" y="112" width="12" height="12" fill="#2ab5a6"/><rect x="650" y="112" width="12" height="12" fill="#2ab5a6"/><rect x="664" y="112" width="12" height="12" fill="#2ab5a6"/><rect x="678" y="112" width="12" height="12" fill="#2ab5a6"/><rect x="692" y="112" width="12" height="12" fill="#2ab5a6"/><rect x="706" y="112" width="12" height="12" fill="#2ab5a6"/><rect x="412" y="126" width="12" height="12" fill="#2ab5a6"/><rect x="426" y="126" width="12" height="12" fill="#2ab5a6"/><rect x="440" y="126" width="12" height="12" fill="#2ab5a6"/><rect x="454" y="126" width="12" height="12" fill="#2ab5a6"/><rect x="468" y="126" width="12" height="12" fill="#2ab5a6"/><rect x="482" y="126" width="12" height="12" fill="#2ab5a6"/><rect x="496" y="126" width="12" height="12" fill="#2ab5a6"/><rect x="510" y="126" width="12" height="12" fill="#2ab5a6"/><rect x="524" y="126" width="12" height="12" fill="#2ab5a6"/><rect x="538" y="126" width="12" height="12" fill="#2ab5a6"/><rect x="552" y="126" width="12" height="12" fill="#2ab5a6"/><rect x="566" y="126" width="12" height="12" fill="#2ab5a6"/><rect x="580" y="126" width="12" height="12" fill="#2ab5a6"/><rect x="594" y="126" width="12" height="12" fill="#2ab5a6"/><rect x="608" y="126" width="12" height="12" fill="#2ab5a6"/><rect x="622" y="126" width="12" height="12" fill="#2ab5a6"/><rect x="636" y="126" width="12" height="12" fill="#2ab5a6"/><rect x="650" y="126" width="12" height="12" fill="#2ab5a6"/><rect x="664" y="126" width="12" height="12" fill="#2ab5a6"/><rect x="678" y="126" width="12" height="12" fill="#2ab5a6"/><rect x="692" y="126" width="12" height="12" fill="#2ab5a6"/><rect x="706" y="126" width="12" height="12" fill="#2ab5a6"/><rect x="412" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="426" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="440" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="454" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="468" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="482" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="496" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="510" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="524" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="538" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="552" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="566" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="580" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="594" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="608" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="622" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="636" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="650" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="664" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="678" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="692" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="706" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="824" y="14" width="12" height="12" fill="#ffc93c"/><rect x="864" y="14" width="12" height="12" fill="#2ab5a6"/><rect x="904" y="14" width="12" height="12" fill="#2ab5a6"/><rect x="944" y="14" width="12" height="12" fill="#2ab5a6"/><rect x="984" y="14" width="12" height="12" fill="#2ab5a6"/><rect x="1024" y="14" width="12" height="12" fill="#ffc93c"/><rect x="1064" y="14" width="12" height="12" fill="#2ab5a6"/><rect x="1104" y="14" width="12" height="12" fill="#2ab5a6"/><rect x="824" y="56" width="12" height="12" fill="#2ab5a6"/><rect x="864" y="56" width="12" height="12" fill="#2ab5a6"/><rect x="904" y="56" width="12" height="12" fill="#2ab5a6"/><rect x="944" y="56" width="12" height="12" fill="#2ab5a6"/><rect x="984" y="56" width="12" height="12" fill="#ffc93c"/><rect x="1024" y="56" width="12" height="12" fill="#2ab5a6"/><rect x="1064" y="56" width="12" height="12" fill="#2ab5a6"/><rect x="1104" y="56" width="12" height="12" fill="#2ab5a6"/><rect x="824" y="98" width="12" height="12" fill="#2ab5a6"/><rect x="864" y="98" width="12" height="12" fill="#2ab5a6"/><rect x="904" y="98" width="12" height="12" fill="#2ab5a6"/><rect x="944" y="98" width="12" height="12" fill="#ffc93c"/><rect x="984" y="98" width="12" height="12" fill="#2ab5a6"/><rect x="1024" y="98" width="12" height="12" fill="#2ab5a6"/><rect x="1064" y="98" width="12" height="12" fill="#2ab5a6"/><rect x="1104" y="98" width="12" height="12" fill="#2ab5a6"/><rect x="824" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="864" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="904" y="140" width="12" height="12" fill="#ffc93c"/><rect x="944" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="984" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="1024" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="1064" y="140" width="12" height="12" fill="#2ab5a6"/><rect x="1104" y="140" width="12" height="12" fill="#ffc93c"/><rect x="824" y="182" width="12" height="12" fill="#2ab5a6"/><rect x="864" y="182" width="12" height="12" fill="#ffc93c"/><rect x="904" y="182" width="12" height="12" fill="#2ab5a6"/><rect x="944" y="182" width="12" height="12" fill="#2ab5a6"/><rect x="984" y="182" width="12" height="12" fill="#2ab5a6"/><rect x="1024" y="182" width="12" height="12" fill="#2ab5a6"/><rect x="1064" y="182" width="12" height="12" fill="#ffc93c"/><rect x="1104" y="182" width="12" height="12" fill="#2ab5a6"/><rect x="824" y="224" width="12" height="12" fill="#ffc93c"/><rect x="864" y="224" width="12" height="12" fill="#2ab5a6"/><rect x="904" y="224" width="12" height="12" fill="#2ab5a6"/><rect x="944" y="224" width="12" height="12" fill="#2ab5a6"/><rect x="984" y="224" width="12" height="12" fill="#2ab5a6"/><rect x="1024" y="224" width="12" height="12" fill="#ffc93c"/><rect x="1064" y="224" width="12" height="12" fill="#2ab5a6"/><rect x="1104" y="224" width="12" height="12" fill="#2ab5a6"/></svg>
+      <svg class="how-svg how-svg-tall" viewBox="0 0 260 500" role="img" aria-label="Pixel squares gather from scattered disorder into a tight ribbon, then fan out into ordered rows"><rect x="112" y="46" width="12" height="12" fill="#3d2a6b"/><rect x="17" y="8" width="12" height="12" fill="#4a3580"/><rect x="156" y="90" width="12" height="12" fill="#3d2a6b"/><rect x="189" y="124" width="12" height="12" fill="#4a3580"/><rect x="227" y="19" width="12" height="12" fill="#3d2a6b"/><rect x="221" y="80" width="12" height="12" fill="#4a3580"/><rect x="15" y="136" width="12" height="12" fill="#3d2a6b"/><rect x="23" y="15" width="12" height="12" fill="#4a3580"/><rect x="51" y="42" width="12" height="12" fill="#3d2a6b"/><rect x="147" y="20" width="12" height="12" fill="#4a3580"/><rect x="17" y="58" width="12" height="12" fill="#3d2a6b"/><rect x="53" y="8" width="12" height="12" fill="#4a3580"/><rect x="127" y="147" width="12" height="12" fill="#3d2a6b"/><rect x="97" y="129" width="12" height="12" fill="#4a3580"/><rect x="65" y="103" width="12" height="12" fill="#3d2a6b"/><rect x="38" y="80" width="12" height="12" fill="#4a3580"/><rect x="94" y="16" width="12" height="12" fill="#3d2a6b"/><rect x="37" y="31" width="12" height="12" fill="#4a3580"/><rect x="210" y="137" width="12" height="12" fill="#3d2a6b"/><rect x="134" y="110" width="12" height="12" fill="#4a3580"/><rect x="210" y="48" width="12" height="12" fill="#3d2a6b"/><rect x="226" y="79" width="12" height="12" fill="#4a3580"/><rect x="21" y="51" width="12" height="12" fill="#3d2a6b"/><rect x="51" y="45" width="12" height="12" fill="#4a3580"/><rect x="173" y="63" width="12" height="12" fill="#3d2a6b"/><rect x="34" y="139" width="12" height="12" fill="#4a3580"/><rect x="154" y="81" width="12" height="12" fill="#3d2a6b"/><rect x="73" y="77" width="12" height="12" fill="#4a3580"/><rect x="213" y="123" width="12" height="12" fill="#3d2a6b"/><rect x="173" y="56" width="12" height="12" fill="#4a3580"/><rect x="134" y="84" width="12" height="12" fill="#3d2a6b"/><rect x="60" y="98" width="12" height="12" fill="#4a3580"/><rect x="180" y="156" width="12" height="12" fill="#3d2a6b"/><rect x="180" y="17" width="12" height="12" fill="#4a3580"/><rect x="18" y="126" width="12" height="12" fill="#3d2a6b"/><rect x="40" y="131" width="12" height="12" fill="#4a3580"/><rect x="158" y="116" width="12" height="12" fill="#3d2a6b"/><rect x="12" y="157" width="12" height="12" fill="#4a3580"/><rect x="140" y="104" width="12" height="12" fill="#3d2a6b"/><rect x="153" y="115" width="12" height="12" fill="#4a3580"/><rect x="112" y="190" width="12" height="12" fill="#2ab5a6"/><rect x="112" y="204" width="12" height="12" fill="#2ab5a6"/><rect x="112" y="218" width="12" height="12" fill="#2ab5a6"/><rect x="112" y="232" width="12" height="12" fill="#2ab5a6"/><rect x="112" y="246" width="12" height="12" fill="#2ab5a6"/><rect x="112" y="260" width="12" height="12" fill="#2ab5a6"/><rect x="112" y="274" width="12" height="12" fill="#2ab5a6"/><rect x="112" y="288" width="12" height="12" fill="#2ab5a6"/><rect x="112" y="302" width="12" height="12" fill="#2ab5a6"/><rect x="112" y="316" width="12" height="12" fill="#2ab5a6"/><rect x="112" y="330" width="12" height="12" fill="#2ab5a6"/><rect x="112" y="344" width="12" height="12" fill="#2ab5a6"/><rect x="126" y="190" width="12" height="12" fill="#2ab5a6"/><rect x="126" y="204" width="12" height="12" fill="#2ab5a6"/><rect x="126" y="218" width="12" height="12" fill="#2ab5a6"/><rect x="126" y="232" width="12" height="12" fill="#2ab5a6"/><rect x="126" y="246" width="12" height="12" fill="#2ab5a6"/><rect x="126" y="260" width="12" height="12" fill="#2ab5a6"/><rect x="126" y="274" width="12" height="12" fill="#2ab5a6"/><rect x="126" y="288" width="12" height="12" fill="#2ab5a6"/><rect x="126" y="302" width="12" height="12" fill="#2ab5a6"/><rect x="126" y="316" width="12" height="12" fill="#2ab5a6"/><rect x="126" y="330" width="12" height="12" fill="#2ab5a6"/><rect x="126" y="344" width="12" height="12" fill="#2ab5a6"/><rect x="140" y="190" width="12" height="12" fill="#2ab5a6"/><rect x="140" y="204" width="12" height="12" fill="#2ab5a6"/><rect x="140" y="218" width="12" height="12" fill="#2ab5a6"/><rect x="140" y="232" width="12" height="12" fill="#2ab5a6"/><rect x="140" y="246" width="12" height="12" fill="#2ab5a6"/><rect x="140" y="260" width="12" height="12" fill="#2ab5a6"/><rect x="140" y="274" width="12" height="12" fill="#2ab5a6"/><rect x="140" y="288" width="12" height="12" fill="#2ab5a6"/><rect x="140" y="302" width="12" height="12" fill="#2ab5a6"/><rect x="140" y="316" width="12" height="12" fill="#2ab5a6"/><rect x="140" y="330" width="12" height="12" fill="#2ab5a6"/><rect x="140" y="344" width="12" height="12" fill="#2ab5a6"/><rect x="14" y="378" width="12" height="12" fill="#ffc93c"/><rect x="42" y="378" width="12" height="12" fill="#2ab5a6"/><rect x="70" y="378" width="12" height="12" fill="#2ab5a6"/><rect x="98" y="378" width="12" height="12" fill="#2ab5a6"/><rect x="126" y="378" width="12" height="12" fill="#2ab5a6"/><rect x="154" y="378" width="12" height="12" fill="#ffc93c"/><rect x="182" y="378" width="12" height="12" fill="#2ab5a6"/><rect x="210" y="378" width="12" height="12" fill="#2ab5a6"/><rect x="14" y="400" width="12" height="12" fill="#2ab5a6"/><rect x="42" y="400" width="12" height="12" fill="#2ab5a6"/><rect x="70" y="400" width="12" height="12" fill="#2ab5a6"/><rect x="98" y="400" width="12" height="12" fill="#2ab5a6"/><rect x="126" y="400" width="12" height="12" fill="#ffc93c"/><rect x="154" y="400" width="12" height="12" fill="#2ab5a6"/><rect x="182" y="400" width="12" height="12" fill="#2ab5a6"/><rect x="210" y="400" width="12" height="12" fill="#2ab5a6"/><rect x="14" y="422" width="12" height="12" fill="#2ab5a6"/><rect x="42" y="422" width="12" height="12" fill="#2ab5a6"/><rect x="70" y="422" width="12" height="12" fill="#2ab5a6"/><rect x="98" y="422" width="12" height="12" fill="#ffc93c"/><rect x="126" y="422" width="12" height="12" fill="#2ab5a6"/><rect x="154" y="422" width="12" height="12" fill="#2ab5a6"/><rect x="182" y="422" width="12" height="12" fill="#2ab5a6"/><rect x="210" y="422" width="12" height="12" fill="#2ab5a6"/><rect x="14" y="444" width="12" height="12" fill="#2ab5a6"/><rect x="42" y="444" width="12" height="12" fill="#2ab5a6"/><rect x="70" y="444" width="12" height="12" fill="#ffc93c"/><rect x="98" y="444" width="12" height="12" fill="#2ab5a6"/><rect x="126" y="444" width="12" height="12" fill="#2ab5a6"/><rect x="154" y="444" width="12" height="12" fill="#2ab5a6"/><rect x="182" y="444" width="12" height="12" fill="#2ab5a6"/><rect x="210" y="444" width="12" height="12" fill="#ffc93c"/><rect x="14" y="466" width="12" height="12" fill="#2ab5a6"/><rect x="42" y="466" width="12" height="12" fill="#ffc93c"/><rect x="70" y="466" width="12" height="12" fill="#2ab5a6"/><rect x="98" y="466" width="12" height="12" fill="#2ab5a6"/><rect x="126" y="466" width="12" height="12" fill="#2ab5a6"/><rect x="154" y="466" width="12" height="12" fill="#2ab5a6"/><rect x="182" y="466" width="12" height="12" fill="#ffc93c"/><rect x="210" y="466" width="12" height="12" fill="#2ab5a6"/><rect x="14" y="488" width="12" height="12" fill="#ffc93c"/><rect x="42" y="488" width="12" height="12" fill="#2ab5a6"/><rect x="70" y="488" width="12" height="12" fill="#2ab5a6"/><rect x="98" y="488" width="12" height="12" fill="#2ab5a6"/><rect x="126" y="488" width="12" height="12" fill="#2ab5a6"/><rect x="154" y="488" width="12" height="12" fill="#ffc93c"/><rect x="182" y="488" width="12" height="12" fill="#2ab5a6"/><rect x="210" y="488" width="12" height="12" fill="#2ab5a6"/></svg>
+      <div class="how-steps">
+        <div class="how-step" data-reveal>
+          <h3>Raise</h3>
+          <p>Hatch your Evo and raise it. Feed it, play with it, keep it happy. A well-raised creature grows stronger every day.</p>
+        </div>
+        <div class="how-step" data-reveal style="--i:1">
+          <h3>Battle</h3>
+          <p>Send your creature into battle against other players' Evos. Win battles to earn rewards and climb the ranks.</p>
+        </div>
+        <div class="how-step" data-reveal style="--i:2">
+          <h3>Evolve</h3>
+          <p>Raise your creature all the way and it evolves. Fierce face, golden crown, white wings, gold glow. Evolved forms are rare by design.</p>
+        </div>
+      </div>
+      <div class="center" data-reveal>
+        <a class="button button-big" href="#" id="play-telegram-btn">Play on Telegram</a>
+        <p class="coming-soon">Coming soon. The Telegram Mini App is in development.</p>
+      </div>
+    </section>
+
+    <!-- ============ QUESTS ============ -->
+    <section id="quests" class="section quests">
+      <div class="list-head">
+        <h2 class="head" data-reveal>Quests</h2>
+        <p class="list-count" data-reveal>4 quests</p>
+      </div>
+      <p class="lead" data-reveal>Quests are how you earn your place in the airdrop. Play the game, finish quests, stack points. The more you participate, the bigger your share.</p>
+      <ul class="quest-list">
+        <li class="quest-item" data-reveal>
+          <img class="quest-photo" src="assets/creature-3.png" alt="" width="128" height="128" loading="lazy">
+          <div>
+            <h3>Daily care</h3>
+            <p>Feed and play with your creature every day.</p>
+          </div>
+        </li>
+        <li class="quest-item" data-reveal style="--i:1">
+          <img class="quest-photo" src="assets/creature-1.png" alt="" width="128" height="128" loading="lazy">
+          <div>
+            <h3>First battle</h3>
+            <p>Win your first battle in the arena.</p>
+          </div>
+        </li>
+        <li class="quest-item" data-reveal style="--i:2">
+          <img class="quest-photo" src="assets/creature-16.png" alt="" width="128" height="128" loading="lazy">
+          <div>
+            <h3>Evolution</h3>
+            <p>Evolve your creature to its final form.</p>
+          </div>
+        </li>
+        <li class="quest-item" data-reveal style="--i:3">
+          <img class="quest-photo" src="assets/creature-17.png" alt="" width="128" height="128" loading="lazy">
+          <div>
+            <h3>Bring friends</h3>
+            <p>Invite friends to raise their own Evos.</p>
+          </div>
+        </li>
+      </ul>
+      <p class="coming-soon center" data-reveal>Quests open with the game. Coming soon.</p>
+    </section>
+
+    <!-- ============ ITEM SHOP ============ -->
+    <section id="shop" class="section shop">
+      <figure class="shop-photo" data-reveal>
+        <img class="drift" src="assets/evolved.webp" alt="Evolved Evo Pixels creature, fierce face, golden crown, white wings, gold glow" width="512" height="512" loading="lazy">
+      </figure>
+      <div class="shop-copy">
+        <h2 class="head" data-reveal>Item shop</h2>
+        <p class="lead" data-reveal style="--i:1">Food, toys, battle gear and cosmetics for your creature. Buy them with your connected Solana wallet.</p>
+        <div class="shop-points">
+          <div class="shop-point" data-reveal>
+            <h3>Food</h3>
+            <p>Keep your Evo fed and happy.</p>
+            <p class="point-note">Coming soon</p>
+          </div>
+          <div class="shop-point" data-reveal style="--i:1">
+            <h3>Toys</h3>
+            <p>Playthings that make training faster.</p>
+            <p class="point-note">Coming soon</p>
+          </div>
+          <div class="shop-point" data-reveal style="--i:2">
+            <h3>Battle gear</h3>
+            <p>Gear up for the arena.</p>
+            <p class="point-note">Coming soon</p>
+          </div>
+          <div class="shop-point" data-reveal style="--i:3">
+            <h3>Cosmetics</h3>
+            <p>Crowns, hats and glows for your Evo.</p>
+            <p class="point-note">Coming soon</p>
+          </div>
+        </div>
+        <div data-reveal>
+          <button id="wallet-btn-shop" class="button button-big" type="button">Connect Wallet to Shop</button>
+          <p class="coming-soon">Connect your Phantom or Solflare wallet. No purchases yet. The shop opens with the game.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ AIRDROP ============ -->
+    <section id="airdrop" class="section airdrop">
+      <p class="lead airdrop-intro" data-reveal>The $EVO airdrop goes to the players who actually showed up. Play the game, finish quests, raise your creature. No pay-to-win, no fixed list. Anyone who participates earns a share.</p>
+      <div class="airdrop-tiles">
+        <div class="tile tile-tall" data-reveal>
+          <p class="tile-figure">1B</p>
+          <p class="tile-caption">Total supply*</p>
+        </div>
+        <div class="tile tile-ink" data-reveal style="--i:1">
+          <p class="tile-figure">$EVO</p>
+          <p class="tile-caption">Token symbol*</p>
+        </div>
+        <div class="tile tile-mid" data-reveal style="--i:2">
+          <p class="tile-figure">Open</p>
+          <p class="tile-caption">Who can earn it</p>
+        </div>
+        <h2 class="head airdrop-head" data-reveal style="--i:1">The airdrop</h2>
+      </div>
+      <p class="fineprint" data-reveal>*Token name, symbol and supply are still being finalised. The airdrop and the listing come several months after the event. Play now, earn later.</p>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="mark" aria-label="Evo Pixels">
+      <span style="--h:1em;--c:var(--accent)">E</span><span style="--h:.8em;--c:var(--field-1)">V</span><span style="--h:.92em;--c:var(--accent)">O</span><span style="--h:.7em;--c:var(--ink)">P</span><span style="--h:1em;--c:var(--field-1)">I</span><span style="--h:.86em;--c:var(--accent)">X</span><span style="--h:.96em;--c:var(--field-1)">E</span><span style="--h:.74em;--c:var(--ink)">L</span><span style="--h:.9em;--c:var(--accent)">S</span>
+    </div>
+    <p class="footer-tag">Raise. Battle. Earn.</p>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h3>Explore</h3>
+        <a href="#creatures">Creatures</a>
+        <a href="#game">Game</a>
+        <a href="#quests">Quests</a>
+        <a href="#shop">Shop</a>
+        <a href="#airdrop">Airdrop</a>
+      </div>
+      <div class="footer-col">
+        <h3>Community</h3>
+        <a href="#">X</a>
+        <a href="#">Telegram</a>
+        <a href="#">Discord</a>
+      </div>
+      <div class="footer-col footer-note">
+        <h3>Play</h3>
+        <p>Play on Telegram, coming soon.</p>
+        <p>Airdrop, months after the event.</p>
+      </div>
+    </div>
+    <div class="footer-last">
+      <p>&copy; 2026 Evo Pixels. All rights reserved.</p>
+      <button id="wallet-btn-footer" class="button button-small" type="button">Connect Wallet</button>
+    </div>
+  </footer>
+
+</body>
+</html>
