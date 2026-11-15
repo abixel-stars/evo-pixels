@@ -1,0 +1,337 @@
+/* Evo Pixels Mini App — style: true-black-flat (seed 2086769900), brand palette kept.
+   Face: dark-purple ground from the product's world, the round creature disc as the
+   signature element, teal #2AB5A6 as the one data hue. Gold #FFC93C only for coins
+   and rarity status. No gradients, no glass, no shadows at rest. Grid: 480px max,
+   one 16px gutter, 16px card padding. */
+/* Self-hosted fonts (latin subsets, downloaded from Google Fonts): the game
+   must render its real typefaces offline and from file://, with no font CDN. */
+@font-face {
+  font-family: "Press Start 2P";
+  src: url("assets/fonts/press-start-2p.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Schibsted Grotesk";
+  src: url("assets/fonts/schibsted-grotesk.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+[hidden] { display: none !important; }
+:root {
+  --ground: #1e1233;
+  --surface: #2a1b4a;
+  --raised: #3d2a6b;
+  --border: #3d2a6b;
+  --rule: #35245e;
+  --control: #8a7bb8;
+  --text: #f4f0ff;
+  --muted: #b4b4b4;
+  --faint: #949494;
+  --accent: #2ab5a6;
+  --gold: #ffc93c;
+  --positive: #2ab5a6;
+  --negative: #e5566f;
+  --pill-positive-bg: #172a1d;
+  --pill-negative-bg: #2c1a20;
+  --radius-card: 8px;
+  --radius-control: 6px;
+  --gap: 16px;
+  --card-pad: 16px;
+  --font-display: "Press Start 2P", "Schibsted Grotesk", system-ui, sans-serif;
+  --font-text: "Schibsted Grotesk", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--text);
+  font-family: var(--font-text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.num { font-variant-numeric: tabular-nums; }
+h1 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 400;
+  margin: 8px 0 8px;
+}
+h2.card-title {
+  font-family: var(--font-display);
+  font-size: 11px;
+  line-height: 1.6;
+  font-weight: 400;
+  margin: 0 0 12px;
+  color: var(--text);
+}
+.lede { color: var(--muted); margin: 0 0 16px; }
+.note { color: var(--faint); font-size: 12px; line-height: 1.6; margin: 12px 0 0; }
+
+.app { max-width: 480px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; }
+
+/* Top bar — 48px, carries the mark, the name, and the coin balance. */
+.topbar {
+  height: 48px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--rule);
+}
+.brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.mark {
+  flex: none;
+  border-radius: 4px;
+  display: block;
+}
+.brand-name { font-family: var(--font-display); font-size: 11px; white-space: nowrap; }
+.coins { font-size: 14px; }
+.coins-num { color: var(--gold); font-weight: 800; }
+.coins-label { color: var(--muted); }
+
+.canvas { flex: 1; padding: 16px 16px 24px; }
+.view[hidden] { display: none; }
+
+/* Cards: flat surface, 1px border, no shadow. */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: var(--card-pad);
+  margin-bottom: var(--gap);
+}
+.creature-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: var(--card-pad);
+  margin-bottom: var(--gap);
+  text-align: center;
+}
+/* Signature element: the round creature disc. */
+.disc {
+  width: 220px; height: 220px;
+  margin: 4px auto 12px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--ground);
+  border: 1px solid var(--border);
+}
+.disc img { width: 100%; height: 100%; object-fit: cover; image-rendering: auto; display: block; }
+.disc-small { width: 120px; height: 120px; margin: 0 auto 8px; }
+.creature-name { font-size: 16px; font-weight: 800; margin: 0 0 4px; }
+.creature-traits { color: var(--muted); margin: 0 0 12px; }
+.level-line {
+  display: flex; justify-content: space-between;
+  font-size: 14px; margin: 0 0 6px;
+}
+.xp-note { color: var(--faint); font-size: 12px; margin: 6px 0 0; }
+.chip {
+  display: inline-block;
+  font-size: 11px; font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.chip-rarity { border-color: var(--gold); color: var(--gold); }
+
+/* Bars: 8px track, teal fill is the one data hue. */
+.bar {
+  height: 8px;
+  background: var(--raised);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.bar-fill { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
+.xp-bar { margin: 0; }
+
+.stat-row {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 10px;
+}
+.stat-label { width: 78px; flex: none; font-size: 14px; }
+.stat-bar { flex: 1; }
+.stat-num { width: 28px; flex: none; text-align: right; }
+.stat-note { color: var(--faint); font-size: 12px; line-height: 1.6; margin: 4px 0 12px; }
+
+/* Buttons: one inverted primary per screen; secondary is outlined. */
+button { font-family: inherit; cursor: pointer; }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-primary {
+  display: block; width: 100%;
+  height: 44px;
+  border: none;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #111111;
+  font-size: 14px; font-weight: 800;
+}
+.btn-care {
+  flex: 1;
+  min-height: 48px;
+  padding: 8px 6px;
+  border: 1px solid var(--control);
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--text);
+  font-size: 14px; font-weight: 600;
+}
+.care-cost {
+  display: block;
+  font-size: 11px; font-weight: 400;
+  color: var(--muted);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+.btn-text {
+  display: block;
+  margin: 16px auto 0;
+  border: none; background: none;
+  color: var(--muted);
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 8px;
+}
+.care-actions { display: flex; gap: 8px; }
+.care-msg, .battle-msg { min-height: 20px; color: var(--positive); font-size: 13px; margin: 10px 0 0; }
+.daily-note { color: var(--faint); font-size: 12px; margin: 4px 0 0; }
+
+.evolve-banner {
+  background: var(--surface);
+  border: 1px solid var(--gold);
+  border-radius: var(--radius-card);
+  padding: var(--card-pad);
+  margin-bottom: var(--gap);
+}
+.evolve-banner p { margin: 0 0 12px; }
+.evolve-banner .btn-primary { background: var(--gold); }
+.odds { color: var(--muted); font-size: 13px; }
+.evolve-rarity-line { font-size: 16px; font-weight: 800; text-align: center; margin: 16px 0 8px; }
+
+/* Picker: 2 columns, selection is a 1px teal line. */
+.picker-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.picker-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 12px;
+  text-align: center;
+  color: var(--text);
+}
+.picker-card img { width: 96px; height: 96px; object-fit: cover; display: block; margin: 0 auto 8px; border-radius: 50%; background: var(--ground); }
+.picker-card .picker-name { font-weight: 800; font-size: 14px; margin: 0 0 2px; }
+.picker-card .picker-traits { color: var(--muted); font-size: 12px; line-height: 1.5; margin: 0; }
+.picker-card.selected { border: 1px solid var(--accent); }
+.picker-detail { color: var(--muted); font-size: 13px; margin: 0 0 12px; text-align: center; }
+
+/* Record: one divided strip, label over value. */
+.record-grid { display: flex; }
+.record-grid > div { flex: 1; text-align: center; }
+.record-grid > div + div { border-left: 1px solid var(--rule); }
+.record-num { display: block; font-size: 24px; font-weight: 400; }
+.record-label { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+
+/* Battle */
+.fighters { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; }
+.fighter {
+  flex: 1; min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 12px;
+  text-align: center;
+}
+.fighter-name { font-weight: 800; font-size: 14px; margin: 0 0 2px; }
+.fighter-level { color: var(--muted); font-size: 12px; margin: 0 0 8px; }
+.hp-line { display: flex; justify-content: space-between; font-size: 13px; margin: 0 0 4px; }
+.hp-bar { margin-bottom: 6px; }
+.fighter-status { color: var(--faint); font-size: 12px; min-height: 18px; margin: 0; }
+.vs {
+  flex: none;
+  align-self: center;
+  font-family: var(--font-display);
+  font-size: 11px;
+  color: var(--muted);
+}
+.battle-note { color: var(--muted); font-size: 13px; margin: 0 0 12px; }
+.battle-actions { display: flex; gap: 8px; margin-bottom: 12px; }
+.battle-actions .btn-primary { flex: 1; width: auto; }
+.item-picker { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
+.item-picker .btn-care { flex: 1; }
+.log-card { margin-top: 12px; }
+.log { list-style: none; margin: 0; padding: 0; }
+.log li {
+  font-size: 13px; line-height: 1.5;
+  padding: 8px 0;
+  border-top: 1px solid var(--rule);
+}
+.log li:first-child { border-top: none; padding-top: 0; }
+.result-line { font-size: 15px; font-weight: 800; text-align: center; margin: 16px 0 12px; }
+.arena-note { color: var(--muted); margin: 0 0 12px; }
+
+/* Lists: rows with 1px rules, numbers right-aligned. */
+.item-list, .quest-list { list-style: none; margin: 0; padding: 0; }
+.item-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--rule);
+}
+.item-row:first-child { border-top: none; padding-top: 0; }
+.item-row:last-child { padding-bottom: 0; }
+.item-info { flex: 1; min-width: 0; }
+.item-name { font-weight: 600; margin: 0; }
+.item-desc { color: var(--muted); font-size: 12px; margin: 2px 0 0; line-height: 1.5; }
+.item-count { font-weight: 800; white-space: nowrap; }
+.item-btn {
+  flex: none;
+  min-height: 36px; padding: 6px 14px;
+  border: 1px solid var(--control);
+  border-radius: var(--radius-control);
+  background: transparent; color: var(--text);
+  font-size: 13px; font-weight: 600;
+  white-space: nowrap;
+}
+.quest-row { padding: 12px 0; border-top: 1px solid var(--rule); }
+.quest-row:first-child { border-top: none; padding-top: 0; }
+.quest-row:last-child { padding-bottom: 0; }
+.quest-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.quest-name { font-weight: 800; margin: 0; }
+.quest-status { font-size: 12px; font-weight: 600; white-space: nowrap; }
+.quest-status.done { color: var(--positive); }
+.quest-status.soon { color: var(--faint); }
+.quest-desc { color: var(--muted); font-size: 13px; margin: 4px 0 0; }
+.quest-progress { color: var(--faint); font-size: 12px; margin: 4px 0 0; }
+
+/* Bottom tab bar: 4 destinations, active label brightens. */
+.tabbar {
+  flex: none;
+  display: flex;
+  border-top: 1px solid var(--rule);
+  background: var(--ground);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.tab {
+  flex: 1;
+  min-height: 52px;
+  border: none;
+  background: none;
+  color: #bbb;
+  font-size: 13px; font-weight: 600;
+}
+.tab.active { color: #fff; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
